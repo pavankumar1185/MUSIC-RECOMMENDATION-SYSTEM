@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Recommendation System</title>
+    <style>
+        /* CSS Styles */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }   
+
+        .mark {
+            animation: marquee 13s linear infinite;
+            text-align: center;
+            color: white;   
+            font-family: verdana; 
+            font-size: 2vh;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .container {
+            animation: fadeIn 3.142s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background-color: rgba(0,0,0,.5);
+            width: 50%;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input[type="text"], button {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background-color: lime;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body style="background-image: url('https://media.cntraveler.com/photos/5eb18e42fc043ed5d9779733/16:9/w_1920%2Cc_limit/BlackForest-Germany-GettyImages-147180370.jpg');">
+    <div class="container">
+        <div class="box">
+            <div style="color:#8EFF06; font-size:3vh; font-family: impact; margin-bottom: 20px;">Music Recommendation System</div>
+            <div class="mark">Hey user, welcome! First please enter artist and genre then click the button below to get recommendations.</div>
+            <!-- Text fields for entering genre -->
+            <input type="text" id="genreInput" placeholder="Enter genre"><br>
+            <input type="text" id="areaInput" placeholder="Enter Aarea of your choice"><br>
+            <button id="recommendButton">Recommend Song</button>
+            <div id="recommendations"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("recommendButton").addEventListener("click", function() {
+            // Make a POST request to the /recommend endpoint
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display recommended tracks
+                var recommendationsDiv = document.getElementById("recommendations");
+                recommendationsDiv.innerHTML = "<h2>Recommended Tracks</h2>";
+                var recommendedTracksList = document.createElement("ul");
+                data.predicted_tracks.forEach(function(track) {
+                    var listItem = document.createElement("li");
+                    listItem.textContent = track;
+                    recommendedTracksList.appendChild(listItem);
+                });
+                recommendationsDiv.appendChild(recommendedTracksList);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
