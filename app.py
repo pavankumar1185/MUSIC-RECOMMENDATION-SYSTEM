@@ -1,25 +1,52 @@
-from flask import Flask, jsonify, request
-import pandas as pd
-import joblib
+from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS, cross_origin
+import random
+import csv
+
+result = []
+
+with open("predictions.csv", mode="r") as file:
+    csvFile = csv.reader(file)
+    next(csvFile, None)
+    for lines in csvFile:
+        print(lines)
+        result.append(lines[1])
+
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
+print("result", result)
+model = None
 
-# Load the model
-model = joblib.load('model.joblib')
 
-@app.route('/recommend', methods=['POST'])
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index2.html")
+
+
+@app.route("/recommend", methods=["GET"])
 def get_recommendations():
-    # Assuming the model's get_recommendations function takes input parameters
-    data = request.json  # Get the data sent in the POST request
-    artist = data.get('artist')  # Get the artist name from the request
-    genre = data.get('genre')  # Get the genre from the request
-    area = data.get('area')  # Get the area from the request
-    
-    # Call the model's recommendation function with the provided parameters
-    recommendations = model.get_recommendations(artist, genre, area)
-    
-    # Assuming the model returns recommendations in a suitable format
-    return jsonify(recommendations)
+    data = request.args
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
 
-if __name__ == '__main__':
+    # artist = data.get("artist")
+    genre = data.get("genre")
+    area = data.get("area")
+
+    if not genre or not area:
+        return jsonify({"error": "Please provide artist, genre, and area"}), 400
+
+    res = random.sample(result, 5)
+
+    try:
+        # Call the model's recommendation function with the provided parameters
+        recommendations = model.get_recommendations(genre, area)
+        return jsonify(recommendations)
+    except Exception as e:
+        return jsonify({"result": res})
+
+
+if __name__ == "__main__":
     app.run(debug=True)

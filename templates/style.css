@@ -1,0 +1,46 @@
+.container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#recommendBtn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ff7f50; /* Coral */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#recommendBtn:hover {
+    background-color: #ff6347; /* Tomato */
+}
+
+#recommendations {
+    margin-top: 20px;
+}
+
+body {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark gray text */
+  }
+
+  h1 {
+    text-align: center; /* Center align headings */
+    font-size: 2em; /* Increase heading font size */
+    margin-bottom: 1em; /* Add space below heading */
+  }
+  
+  p {
+    line-height: 1.5; /* Increase line spacing for better readability */
+  }
+  
+
