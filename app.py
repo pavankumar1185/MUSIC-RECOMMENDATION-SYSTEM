@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, render_template
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import random
 import csv
 
@@ -9,14 +9,14 @@ with open("predictions.csv", mode="r") as file:
     csvFile = csv.reader(file)
     next(csvFile, None)
     for lines in csvFile:
-        print(lines)
+        # print(lines)
         result.append(lines[1])
 
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
-print("result", result)
+# print("result", result)
 model = None
 
 
